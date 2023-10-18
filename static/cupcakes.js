@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "http://127.0.0.1:5000/api";
 
 /** Generate Cupcake Through Form */
 
@@ -22,30 +22,32 @@ async function ShowInitialCupcakes() {
     const response = await axios.get(`${BASE_URL}/cupcakes`);
 
     for(let cupcake of response.data.cupcakes) {
-        let newCupcake = $(generateCupCakeHTML(cupcake));
+        let newCupcake = $(generateCupcakeHTML(cupcake));
         $("#cupcake-list").append(newCupcake);
     }
 }
 
 /** Add Cupcake */
 
-$("#new-cupcake-form").on("submit", async function (e) {
-    e.preventDefault();
+$("#new-cupcake-form").on("submit", async function (evt) {
+    evt.preventDefault();
+  
     let flavor = $("#form-flavor").val();
-    let size = $("#form-size").val();
     let rating = $("#form-rating").val();
-    let image = $("form-image").val();
-
-    let response = await axios.post(`${BASE_URL}/cupcakes`, {
-        flavor,
-        size,
-        rating,
-        image,
+    let size = $("#form-size").val();
+    let image = $("#form-image").val();
+  
+    const newCupcakeResponse = await axios.post(`${BASE_URL}/cupcakes`, {
+      flavor,
+      rating,
+      size,
+      image
     });
-    let newCupcake = $(generateCupcakeHTML(response.data.cupcake));
-    $("#cupcake-list").append(newCupcake);
+  
+    let newCupcake = $(generateCupcakeHTML(newCupcakeResponse.data.cupcake));
+    $("#cupcakes-list").append(newCupcake);
     $("#new-cupcake-form").trigger("reset");
-});
+  });
 
 
 /** Delete Cupcake */

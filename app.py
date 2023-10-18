@@ -5,7 +5,7 @@ from models import db, connect_db, Cupcake
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///cupcakes'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "secret"
@@ -15,6 +15,7 @@ connect_db(app)
 
 
 @app.route("/")
+#@cross_origin()
 def root():
     """Homepage"""
     return render_template("index.html")
